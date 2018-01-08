@@ -1,12 +1,12 @@
 {
     "name": "inzernettechnologies/ias-php",
     "description": "InZernet Authentication System Helper for PHP",
-    "keywords": ["template", "composer", "package"],
+    "keywords": ["authentication"],
     "license": "DBAD",
     "authors": [
         {
-            "name": "Darwin Biler",
-            "email": "buonzz@gmail.com"
+            "name": "Cody Robinson",
+            "email": "crobinson@inzernettechnologies.com"
         }
     ],
     "type": "project",
