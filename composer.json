@@ -1,17 +1,21 @@
 {
     "name": "inzernettechnologies/ias-php",
     "description": "InZernet Authentication System Helper for PHP",
-    "keywords": ["template", "composer", "package"],
+    "keywords": ["authentication"],
     "license": "DBAD",
     "authors": [
         {
-            "name": "Darwin Biler",
-            "email": "buonzz@gmail.com"
+            "name": "Cody Robinson",
+            "email": "crobinson@inzernettechnologies.com"
         }
     ],
     "type": "project",
     "require": {
 		"php": ">=5.4",
+        "firebase/php-jwt": "v5.0.0"
+    },
+    "require-dev": {
+        "php": ">=5.4",
         "firebase/php-jwt": "v5.0.0"
     },
 	"autoload": {

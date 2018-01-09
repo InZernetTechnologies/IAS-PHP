@@ -1,7 +1,9 @@
 <?php namespace InZernetTechnologies\IAS;
 use InZernetTechnologies\IAS\Builder\JWT;
 use InZernetTechnologies\IAS\Builder\request;
-use InZernetTechnologies\IAS\Options\callbackType;
+use InZernetTechnologies\IAS\Exceptions\invalidResponse;
+use InZernetTechnologies\IAS\Options\API\get_options;
+use InZernetTechnologies\IAS\Options\API\options;
 
 class IAS {
 
@@ -30,11 +32,27 @@ class IAS {
         }
     }
 
-    public function loginResponse($return = false){
-        if ($return){
+    public function loginResponse(){
 
-        } else {
+        $token = (isset($_GET["token"]) ? $_GET["token"] : (isset($_POST["token"]) ? $_POST["token"] : null));
 
+        if ($token == null){
+            throw new invalidResponse("Did not receive an IAS token");
         }
+
+        $JWT = new JWT($token);
+        if (!$JWT->softCheckResponse()){
+            throw new invalidResponse("Invalid token: " . $JWT->getLastError());
+        }
+
+        return (string) $token;
+    }
+
+    public function get($token){
+        return new options($token, "get");
+    }
+
+    public function set($token){
+        return new options($token, "post");
     }
 }

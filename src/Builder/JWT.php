@@ -14,7 +14,7 @@ class JWT {
         if ($jwt != null) {
             $this->jwt = $jwt;
             $this->secret = $secret;
-            $this->setPayload();
+            $this->set();
         }
     }
 
@@ -46,6 +46,22 @@ class JWT {
         return $this->error;
     }
 
+    public function softCheckResponse(){
+        if (count($this->set(true)) != 3){
+            $this->error = "Wrong number of segments";
+            return false;
+        }
+        if (!isset($this->payload)){
+            $this->error = "Empty payload";
+            return false;
+        }
+        if (!isset($this->payload["iss"]) && !isset($this->payload["exp"]) && !isset($this->payload["iat"]) && !isset($this->payload["jti"]) && !isset($this->payload["typ"]) && !isset($this->payload["permissions"])){
+            $this->error = "Invalid token";
+            return false;
+        }
+        return true;
+    }
+
     public function canDecode(){
 
         try {
@@ -63,8 +79,13 @@ class JWT {
         }
     }
 
-    private function setPayload(){
+    private function set($return = false){
         $tks = explode('.', $this->jwt);
+        if ($return){
+            return $tks;
+        }
+        $this->header = json_decode(base64_decode($tks[0]), true);
         $this->payload = json_decode(base64_decode($tks[1]), true);
+        $this->signature = json_decode(base64_decode($tks[2]), true);
     }
 }
