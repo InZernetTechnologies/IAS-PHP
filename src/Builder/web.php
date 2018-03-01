@@ -6,6 +6,8 @@ class web {
     private $status;
     private $token;
     private $APIver = 100;
+    private $base_url = "http://localhost/IAS-API/public";
+    private $debug;
 
 
     public function __construct($token) {
@@ -14,14 +16,17 @@ class web {
     }
 
     public function buildURL($endpoint, $data){
-        curl_setopt($this->curl, CURLOPT_URL, "http://api.ias.inzernettechnologies.com/api/$this->APIver/$endpoint/$data");
+        curl_setopt($this->curl, CURLOPT_URL, "$this->base_url/api/$endpoint/$data");
     }
 
     public function setType($type){
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, $type);
     }
 
-    public function setPOST(array $fields){
+    public function setPOST($fields){
+        if (!is_array($fields)){
+            curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+        }
         curl_setopt($this->curl, CURLOPT_POSTFIELDS, $fields);
     }
 
@@ -34,10 +39,18 @@ class web {
         return $this->status;
     }
 
+    public function debug($status){
+        $this->debug = $status;
+    }
+
     public function execute(){
         $this->beforeExecute();
         $this->output = curl_exec($this->curl);
         $this->status = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
+        if ($this->debug){
+            print_r($this->output);
+            return $this->output;
+        }
         curl_close($this->curl);
         return json_decode($this->output, true);
     }
@@ -46,7 +59,7 @@ class web {
         if ($this->status != 200){
             return false;
         }
-        $json = json_encode($this->output);
+        $json = json_decode($this->output, true);
         if ($json["status"] == false ){
             return false;
         }
