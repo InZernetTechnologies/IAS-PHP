@@ -18,7 +18,8 @@ class request {
             "typ" => "request",
             "request" => array (
                 "create" => array(),
-                "permissions" => array()
+                "permissions" => array(),
+                "use" => array()
             ),
             "callback" => array (
                 "type" => null,
@@ -41,6 +42,9 @@ class request {
 
     public function setRequestCreate(array $create){
         $this->request["request"]["create"] = $create;
+    }
+    public function setRequestUse(array $use){
+        $this->request["request"]["use"] = $use;
     }
 
     public function setRequestPermissions(array $permissions){

@@ -1,35 +1,41 @@
 <?php namespace InZernetTechnologies\IAS;
 use InZernetTechnologies\IAS\Builder\JWT;
-use InZernetTechnologies\IAS\Builder\request;
+use InZernetTechnologies\IAS\Builder\loginRequest;
 use InZernetTechnologies\IAS\Exceptions\invalidResponse;
-use InZernetTechnologies\IAS\Options\API\get_options;
-use InZernetTechnologies\IAS\Options\API\options;
 
 class IAS {
 
-    private $IAS_SECRET = "H5=aPr8ra2u#rAPHu+!8uv4Y3daqu&+u\$u?H5mu8aSPuwRawuSAheswutab8treDta3athATr_zEPruRetawruHujuxespas?rUyE6a\$W+ThebRaSuTHUGEpRub78-6+";
-    private $IAS_APPLICATION = "5a2b514ff508bf217c103478";
+    private $application;
+    private $secret;
 
-    public function loginRequest($return = false, $callbackType, $callbackURL, array $create = array(), array $permissions = array()){
+    public function __construct($secret = null, $application = null){
+        $this->secret = $secret;
+        $this->application = $application;
+        return $this;
+    }
 
-        $request = new request();
-        $request->setIssuer($this->IAS_APPLICATION);
-        $request->setCallbackType($callbackType);
-        $request->setCallbackURL($callbackURL);
-        $request->setRequestCreate($create);
-        $request->setRequestPermissions($permissions);
+    public function setSecret($secret){
+        $this->secret = $secret;
+        return $this;
+    }
 
-        $requestArray = $request->build();
+    public function getApplication(){
+        return $this->application;
+    }
 
-        $JWT = new JWT(null);
-        $JWT->setSecret($this->IAS_SECRET);
-        $requestJWT = $JWT->encode($requestArray);
+    public function getSecret(){
+        return $this->secret;
+    }
 
-        if ($return){
-            return "http://ias.inzernettechnologies.com/login/" . $requestJWT;
-        } else {
-            header("Location: http://ias.inzernettechnologies.com/login/" . $requestJWT);
-        }
+    public function setApplication($application){
+        $this->application = $application;
+        return $this;
+    }
+
+    public function loginRequest($return = false){
+        $loginRequest = new loginRequest($return, $this->secret);
+        $loginRequest->setIssuer($this->application);
+        return $loginRequest;
     }
 
     public function loginResponse(){
@@ -46,13 +52,5 @@ class IAS {
         }
 
         return (string) $token;
-    }
-
-    public function get($token){
-        return new options($token, "get");
-    }
-
-    public function set($token){
-        return new options($token, "post");
     }
 }
