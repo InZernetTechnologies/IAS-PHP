@@ -13,7 +13,6 @@ class drop {
         $web = new web($this->token);
         $web->buildURL("drop", $this->id);
         $data = $web->execute();
-        print_r($data);
         if ($web->checkResult()){
             return $data["data"];
         } else {
@@ -51,9 +50,6 @@ class drop {
         $web->buildURL("drop", $this->id);
         $web->setType("POST");
         $web->setPOST($data);
-        $web->debug(true);
-        $data = $web->execute();
-        print_r($web->checkResult());
         if ($web->checkResult()){
             return $data["data"];
         } else {
