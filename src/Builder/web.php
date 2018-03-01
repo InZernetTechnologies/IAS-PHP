@@ -6,7 +6,7 @@ class web {
     private $status;
     private $token;
     private $APIver = 100;
-    private $base_url = "http://localhost/IAS-API/public";
+    private $base_url = "http://api.ias.inzernettechnologies.com/";
     private $debug;
 
 

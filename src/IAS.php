@@ -51,6 +51,6 @@ class IAS {
             throw new invalidResponse("Invalid token: " . $JWT->getLastError());
         }
 
-        return (string) $token;
+        return new \Token($this);
     }
 }
