@@ -1,4 +1,4 @@
-<?php
+<?php namespace InZernetTechnologies\IAS;
 class Token {
 
     private $token;
