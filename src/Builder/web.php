@@ -63,6 +63,7 @@ class web {
         if ($json["status"] == false ){
             return false;
         }
+        return true;
     }
 
 }

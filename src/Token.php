@@ -1,4 +1,4 @@
-<?php
+<?php namespace InZernetTechnologies\IAS;
 class Token {
 
     private $token;
@@ -12,7 +12,7 @@ class Token {
     }
 
     public function getData(){
-        return json_decode($this->payload, true);
+        return $this->payload;
     }
 
     private function set($return = false){
